@@ -1,5 +1,6 @@
 package com.app.login.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -11,8 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.app.login.ExerciseDetailsActivity;
 import com.app.login.R;
 import com.app.login.adapter.LeftListAdapter;
+import com.app.login.adapter.RightListAdapter;
+import com.app.login.entity.Dataservice;
+import com.app.login.entity.ExerciseInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +27,9 @@ public class ExerciseFragment extends Fragment {
 
     private View rootView;
     private RecyclerView leftRecyclerView;
+    private RecyclerView rightRecyclerView;
     private LeftListAdapter mLeftListAdapter;
+    private RightListAdapter mRightListAdapter;
 
     private List<String> leftDataList = new ArrayList<>();
 
@@ -35,6 +42,7 @@ public class ExerciseFragment extends Fragment {
 
         //初始化控件
         leftRecyclerView = rootView.findViewById(R.id.leftRecyclerView);
+        rightRecyclerView = rootView.findViewById(R.id.rightRecyclerView);
 
         return rootView;
     }
@@ -53,12 +61,35 @@ public class ExerciseFragment extends Fragment {
         mLeftListAdapter = new LeftListAdapter(leftDataList);
         leftRecyclerView.setAdapter(mLeftListAdapter);
 
+        mRightListAdapter = new RightListAdapter();
+        rightRecyclerView.setAdapter(mRightListAdapter);
+        //默认加载运动的数据为第0页
+        mRightListAdapter.setListData(Dataservice.getListData(0));
+
+        //recyclerView点击事件
+        mRightListAdapter.setOnItemClickListener(new RightListAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(ExerciseInfo exerciseInfo, int positionn) {
+
+                //跳转传值
+                Intent intent = new Intent(getActivity(), ExerciseDetailsActivity.class);
+
+                //intent 传递对象的时候，实体类一定要实现implements Serializable
+                intent.putExtra("exerciseInfo",exerciseInfo);
+                startActivity(intent);
+
+            }
+        });
+
 
         //recyclerView点击事件
         mLeftListAdapter.setmLeftListonClickItemListener(new LeftListAdapter.LeftListonClickItemListener() {
             @Override
             public void onItemClick(int position) {
                 mLeftListAdapter.setCurrentIndex(position);
+
+                //点击左侧分类切换对应的列表数据
+                mRightListAdapter.setListData(Dataservice.getListData(position));
             }
         });
     }
