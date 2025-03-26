@@ -62,14 +62,14 @@
                     android:id="@+id/exercise_calories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="200"
+                    android:text="40"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="  calories/h"
+                    android:text="  calories/set"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
@@ -104,6 +104,7 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <Button
+        android:id="@+id/addPlan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Set into your plan"

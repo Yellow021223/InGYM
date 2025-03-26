@@ -13,6 +13,7 @@ public class ExerciseInfo implements Serializable {
 
 
 
+
     public ExerciseInfo(int exercise_id, int product_img, String exercise_title, String exercise_details,int exercise_calories) {
         this.exercise_id = exercise_id;
         this.product_img = product_img;
@@ -60,4 +61,6 @@ public class ExerciseInfo implements Serializable {
     public void setExercise_calories(int exercise_calories) {
         this.exercise_calories = exercise_calories;
     }
+
+
 }
