@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.app.login.R;
+import com.app.login.entity.ExerciseInfo;
 import com.app.login.entity.PlanInfo;
 
 import java.util.ArrayList;
@@ -46,6 +47,35 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyHold
         holder.exercise_title.setText(planInfo.getExercise_title());
         holder.exercise_calories.setText(planInfo.getExercise_calories()+"");
         holder.exercise_count.setText(planInfo.getExercise_count()+"");
+
+
+        //设置点击事件
+//        holder.btn_subtract.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(null != mOnItemClickListener){
+//                    mOnItemClickListener.onSubTractOnClick(exerciseInfo,position);
+//
+//                }
+//
+//            }
+//        });
+//
+//        holder.btn_plus.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(null != mOnItemClickListener){
+//                    mOnItemClickListener.onPlusOnClick(exerciseInfo,position);
+//                }
+//
+//
+//            }
+//        });
+
+
+
+
+
     }
 
     @Override
@@ -58,6 +88,9 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyHold
         TextView exercise_title;
         TextView exercise_calories;
         TextView exercise_count;
+        TextView btn_subtract;
+        TextView btn_plus;
+
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -66,6 +99,21 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyHold
             exercise_title = itemView.findViewById(R.id.exercise_title);
             exercise_calories = itemView.findViewById(R.id.exercise_calories);
             exercise_count = itemView.findViewById(R.id.exercise_count);
+            btn_subtract = itemView.findViewById(R.id.btn_subtract);
+            btn_plus = itemView.findViewById(R.id.btn_plus);
+
         }
+    }
+
+
+    private onItemClickListener mOnItemClickListener;
+
+    public void setmOnItemClickListener(onItemClickListener mOnItemClickListener) {
+        this.mOnItemClickListener = mOnItemClickListener;
+    }
+
+    public interface onItemClickListener{
+        void onPlusOnClick(ExerciseInfo exerciseInfo,int position);
+        void onSubTractOnClick(ExerciseInfo exerciseInfo,int position);
     }
 }

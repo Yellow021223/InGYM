@@ -13,11 +13,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.app.login.db.UserDbHelper;
+
 public class RegisterActivity extends AppCompatActivity {
     private EditText et_username;
     private EditText et_password;
 
-    private SharedPreferences mSharedpreferences;
+
 
 
     @Override
@@ -32,8 +34,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
 
-        //获取mSharedpreferences（还不太明白）
-        mSharedpreferences = getSharedPreferences("user",MODE_PRIVATE);
 
 
         //初始化控件
@@ -60,14 +60,15 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(username) || TextUtils.isEmpty(password)){
                     Toast.makeText(RegisterActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
                 }else {
-                    SharedPreferences.Editor edit = mSharedpreferences.edit();
-                    edit.putString("username",username);
-                    edit.putString("password",password);
 
-                    //一定要提交
-                    edit.commit();
-                    Toast.makeText(RegisterActivity.this, "Successfully!", Toast.LENGTH_SHORT).show();
-                    finish();
+                    int row =UserDbHelper.getInstance(RegisterActivity.this).register(username,password,"Null");
+                    if(row>0){
+                        Toast.makeText(RegisterActivity.this, "Successfully!", Toast.LENGTH_SHORT).show();
+                        finish();
+
+                    }
+
+
                 }
 
             }

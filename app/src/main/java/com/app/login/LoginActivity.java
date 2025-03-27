@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,11 +17,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.app.login.db.UserDbHelper;
+import com.app.login.entity.UserInfo;
+
 public class LoginActivity extends AppCompatActivity {
 
     private EditText et_username;
     private EditText et_password;
     private SharedPreferences mSharedpreferences;
+    private CheckBox remember;
+
+    private boolean is_login;
 
     // 适配窗口边距
     @Override
@@ -41,6 +49,22 @@ public class LoginActivity extends AppCompatActivity {
         //初始化控件
         et_username = findViewById(R.id.et_username);
         et_password = findViewById(R.id.et_password);
+        remember = findViewById(R.id.remember);
+
+
+        //获取mSharedpreferences实例
+        mSharedpreferences = getSharedPreferences("user",MODE_PRIVATE);
+
+
+        //判断是否记住密码
+        is_login = mSharedpreferences.getBoolean("is_login", false);
+        if(is_login){
+            String username = mSharedpreferences.getString("username",null);
+            String password = mSharedpreferences.getString("password",null);
+            et_username.setText(username);
+            et_password.setText(password);
+            remember.setChecked(true);
+        }
 
 
         //点击注册
@@ -63,23 +87,47 @@ public class LoginActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)){
                     Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
                 }else {
-                    String name = mSharedpreferences.getString("username",null);
-                    String pwd = mSharedpreferences.getString("password",null);
-                    if(username.equals(name) && password.equals(pwd)){
-                        //跳转到问卷
-                        Intent intent = new Intent(LoginActivity.this,SurveyActivity.class);
-                        startActivity(intent);
-                        //提示登陆成功
-                        Toast.makeText(LoginActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
+                    UserInfo login = UserDbHelper.getInstance(LoginActivity.this).login(username);
+                    if(login != null){
+                        if(username.equals(login.getUsername()) && password.equals(login.getPassword())){
 
+                            //实现记住密码
+                            SharedPreferences.Editor edit = mSharedpreferences.edit();
+                            edit.putBoolean("is_login",is_login);
+                            edit.putString("username",username);
+                            edit.putString("password",password);
+
+                            //一定要提交
+                            edit.commit();
+
+                            //这需要修改为跳转到问卷
+                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
+                            startActivity(intent);
+                            //提示登陆成功
+                            Toast.makeText(LoginActivity.this, "Login successfully!", Toast.LENGTH_SHORT).show();
+
+                        }else {
+                            //提示用户名或密码错误
+                            Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
+
+                        }
                     }else {
-                        //提示用户名或密码错误
-                        Toast.makeText(LoginActivity.this, "Incorrect username or password", Toast.LENGTH_SHORT).show();
-
+                        //提示用户,该账号并未注册
+                        Toast.makeText(LoginActivity.this, "This account is not registered", Toast.LENGTH_SHORT).show();
                     }
+
                 }
             }
         });
+
+        //remember的点击事件
+        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                is_login = isChecked;
+            }
+        });
+
 
     }
 }
