@@ -78,7 +78,7 @@ public class PlanDbHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * 修改计划
+     * 修改计划(增加组数)
      */
 
     public int updateExercise(int plan_id, PlanInfo planInfo) {
@@ -94,6 +94,29 @@ public class PlanDbHelper extends SQLiteOpenHelper {
         return update;
 
     }
+
+    /**
+     * 减少组数
+     * @return
+     */
+
+    public int subStractUpdateExercise(int plan_id, PlanInfo planInfo) {
+        if (planInfo.getExercise_count()>=2){
+            //获取SQLiteDatabase实例
+            SQLiteDatabase db = getWritableDatabase();
+            // 填充占位符
+            ContentValues values = new ContentValues();
+            values.put("exercise_count", planInfo.getExercise_count() - 1);
+            // 执行SQL
+            int update = db.update("plan_table", values, " _id=?", new String[]{plan_id+""});
+            // 关闭数据库连接
+            db.close();
+            return update;
+        }
+        return 0;
+    }
+
+
 
     /**
      * 根据用户名和商品ID判断有没有添加过这项运动到计划中
@@ -147,6 +170,20 @@ public class PlanDbHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return list;
+    }
+
+
+    /**
+     * 删除plan
+     */
+    public int delete(String plan_id) {
+        //获取SQLiteDatabase实例
+        SQLiteDatabase db = getWritableDatabase();
+        // 执行SQL
+        int delete = db.delete("plan_table", " _id=?", new String[]{plan_id});
+        // 关闭数据库连接
+        db.close();
+        return delete;
     }
 
 

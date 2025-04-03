@@ -39,7 +39,7 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyHold
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, @SuppressLint("RecyclerView") int position) {
 
         //绑定数据
         PlanInfo planInfo = mPlanInfoList.get(position);
@@ -50,27 +50,37 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyHold
 
 
         //设置点击事件
-//        holder.btn_subtract.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(null != mOnItemClickListener){
-//                    mOnItemClickListener.onSubTractOnClick(exerciseInfo,position);
-//
-//                }
-//
-//            }
-//        });
-//
-//        holder.btn_plus.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(null != mOnItemClickListener){
-//                    mOnItemClickListener.onPlusOnClick(exerciseInfo,position);
-//                }
-//
-//
-//            }
-//        });
+        holder.btn_subtract.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnItemClickListener != null){
+                    mOnItemClickListener.onSubTractOnClick(planInfo,position);
+
+                }
+
+            }
+        });
+
+        holder.btn_plus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mOnItemClickListener != null){
+                    mOnItemClickListener.onPlusOnClick(planInfo,position);
+                }
+
+
+            }
+        });
+
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemClickListener != null ){
+                    mOnItemClickListener.delOnClick(planInfo,position);
+                }
+                return true;
+            }
+        });
 
 
 
@@ -113,7 +123,8 @@ public class PlanListAdapter extends RecyclerView.Adapter<PlanListAdapter.MyHold
     }
 
     public interface onItemClickListener{
-        void onPlusOnClick(ExerciseInfo exerciseInfo,int position);
-        void onSubTractOnClick(ExerciseInfo exerciseInfo,int position);
+        void onPlusOnClick(PlanInfo planInfo,int position);
+        void onSubTractOnClick(PlanInfo planInfo,int position);
+        void delOnClick(PlanInfo planInfo,int position);
     }
 }

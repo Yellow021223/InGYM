@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.content,mPlanFragment);
             }else {
                 fragmentTransaction.show(mPlanFragment);
+                mPlanFragment.loadData();
             }
         } else if (position == 2) {
             if (mHistoryFragment ==null){
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.content,mHistoryFragment);
             }else {
                 fragmentTransaction.show(mHistoryFragment);
+                mHistoryFragment.loadData();
             }
         } else if(position == 3){
             if (mMineFragment ==null){

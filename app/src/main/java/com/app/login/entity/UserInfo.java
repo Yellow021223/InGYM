@@ -6,10 +6,15 @@ public class UserInfo {
     private String password;
     private String nickname;
 
+    public static UserInfo sUserInfo;
 
+    public static UserInfo getsUserInfo() {
+        return sUserInfo;
+    }
 
-
-
+    public static void setsUserInfo(UserInfo sUserInfo) {
+        UserInfo.sUserInfo = sUserInfo;
+    }
 
     //构造方法
     public UserInfo(int user_id, String username, String password, String nickname) {

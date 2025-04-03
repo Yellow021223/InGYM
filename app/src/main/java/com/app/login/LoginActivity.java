@@ -100,6 +100,9 @@ public class LoginActivity extends AppCompatActivity {
                             //一定要提交
                             edit.commit();
 
+                            //保存用户名和密码
+                            UserInfo.setsUserInfo(login);
+
                             //这需要修改为跳转到问卷
                             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
                             startActivity(intent);

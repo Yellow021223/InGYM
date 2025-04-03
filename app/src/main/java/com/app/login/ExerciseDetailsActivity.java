@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.app.login.db.PlanDbHelper;
 import com.app.login.entity.ExerciseInfo;
+import com.app.login.entity.UserInfo;
 
 public class ExerciseDetailsActivity extends AppCompatActivity {
 
@@ -66,14 +67,20 @@ public class ExerciseDetailsActivity extends AppCompatActivity {
         findViewById(R.id.addPlan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //加入到计划中
-                Object exercise_count = null;
-                int row = PlanDbHelper.getInstance(ExerciseDetailsActivity.this).addPlan("DuanLi", exerciseInfo.getExercise_id(), exerciseInfo.getProduct_img(), exerciseInfo.getExercise_title(), exerciseInfo.getExercise_calories());
-                if (row > 0){
-                    Toast.makeText(ExerciseDetailsActivity.this, "Add successfully!", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(ExerciseDetailsActivity.this, "Add failed!", Toast.LENGTH_SHORT).show();
+
+                UserInfo userInfo = UserInfo.getsUserInfo();
+                if(userInfo != null){
+                    //加入到计划中
+                    Object exercise_count = null;
+                    int row = PlanDbHelper.getInstance(ExerciseDetailsActivity.this).addPlan(userInfo.getUsername(), exerciseInfo.getExercise_id(), exerciseInfo.getProduct_img(), exerciseInfo.getExercise_title(), exerciseInfo.getExercise_calories());
+                    if (row > 0){
+                        Toast.makeText(ExerciseDetailsActivity.this, "Add successfully!", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(ExerciseDetailsActivity.this, "Add failed!", Toast.LENGTH_SHORT).show();
+                    }
                 }
+
+
             }
         });
     }
