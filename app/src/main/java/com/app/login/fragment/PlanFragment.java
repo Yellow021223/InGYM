@@ -9,10 +9,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,15 +116,50 @@ public class PlanFragment extends Fragment {
                     if (planList.size() == 0){
                         Toast.makeText(getActivity(), "You don't have any plan", Toast.LENGTH_SHORT).show();
                     }else {
-                        //生成记录
-                        HistoryDbHelper.getInstance(getActivity()).insertByAll(planList,"2022-9-21","A nice day!");
 
-                        //清空plan
-                        for (int i=0; i < planList.size();i++){
-                            PlanDbHelper.getInstance(getActivity()).delete(planList.get(i).getPlan_id()+"");
-                        }
-                        //再次加载数据
-                        loadData();
+                        View view = LayoutInflater.from(getActivity()).inflate(R.layout.finish_dialog_layout, null);
+
+                        EditText et_date = view.findViewById(R.id.et_date);
+                        EditText et_comment = view.findViewById(R.id.et_comment);
+                        TextView tv_total = view.findViewById(R.id.tv_total);
+
+                        //设置总的消耗量
+                        tv_total.setText(total.getText().toString());
+
+
+                        new AlertDialog.Builder(getActivity())
+
+                                .setTitle("What would you like to say to yourself today?")
+                                .setView(view)
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String date = et_date.getText().toString();
+                                        String comment = et_comment.getText().toString();
+                                        if(TextUtils.isEmpty(comment)|| TextUtils.isEmpty(date)){
+                                            Toast.makeText(getActivity(), "Please enter the information", Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            //生成记录
+                                            HistoryDbHelper.getInstance(getActivity()).insertByAll(planList,date,comment);
+
+                                            //清空plan
+                                            for (int i=0; i < planList.size();i++){
+                                                PlanDbHelper.getInstance(getActivity()).delete(planList.get(i).getPlan_id()+"");
+                                            }
+                                            //再次加载数据
+                                            loadData();
+                                            Toast.makeText(getActivity(), "Record successfully!Do a set of stretches and have a good rest!", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    }
+                                })
+                                .show();
                     }
                 }
             }

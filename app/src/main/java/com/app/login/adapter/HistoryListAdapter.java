@@ -1,5 +1,6 @@
 package com.app.login.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyHolder holder, @SuppressLint("RecyclerView") int position) {
 
         //绑定数据
         HistoryInfo historyInfo = mHistoryInfos.get(position);
@@ -40,9 +41,12 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
         holder.exercise_img.setImageResource(historyInfo.getExercise_img());
         holder.exercise_title.setText(historyInfo.getExercise_title());
         holder.exercise_calories.setText(historyInfo.getExercise_calories()+"");
+        //设置时间和评论
+        holder.Date.setText(historyInfo.getDate());
+        holder.Comment.setText(historyInfo.getComment());
 
 
-        //长安删除
+        //长按删除
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -65,6 +69,8 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
         TextView exercise_title;
         TextView exercise_calories;
         TextView exercise_count;
+        TextView Comment;
+        TextView Date;
 
         public MyHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,6 +78,9 @@ public class HistoryListAdapter extends RecyclerView.Adapter<HistoryListAdapter.
             exercise_title = itemView.findViewById(R.id.exercise_title);
             exercise_calories = itemView.findViewById(R.id.exercise_calories);
             exercise_count = itemView.findViewById(R.id.exercise_count);
+            Comment = itemView.findViewById(R.id.Comment);
+            Date = itemView.findViewById(R.id.Date);
+
         }
     }
 
