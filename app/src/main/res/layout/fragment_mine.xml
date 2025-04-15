@@ -73,6 +73,7 @@
         android:background="#f5f5f5"/>
 
     <RelativeLayout
+        android:id="@+id/updatepwd"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:paddingLeft="10dp"
@@ -197,6 +198,7 @@
         android:background="#f5f5f5"/>
 
 </RelativeLayout><RelativeLayout
+    android:id="@+id/about"
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:paddingLeft="10dp"

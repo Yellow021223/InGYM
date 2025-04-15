@@ -84,4 +84,20 @@ public class UserDbHelper extends SQLiteOpenHelper {
         db.close();
         return insert;
     }
+
+    //修改密码
+    public int updatePwd(String username, String password) {
+        //获取SQLiteDatabase实例
+        SQLiteDatabase db = getWritableDatabase();
+        // 填充占位符
+        ContentValues values = new ContentValues();
+        values.put("password", password);
+        // 执行SQL
+        int update = db.update("user_table", values, " username=?", new String[]{username});
+        // 关闭数据库连接
+        db.close();
+        return update;
+
+    }
+
 }

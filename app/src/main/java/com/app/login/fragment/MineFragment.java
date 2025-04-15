@@ -13,8 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.app.login.AboutActivity;
 import com.app.login.LoginActivity;
 import com.app.login.R;
+import com.app.login.UpdatePwdActivity;
 import com.app.login.entity.UserInfo;
 
 
@@ -64,6 +66,24 @@ public class MineFragment extends Fragment {
             }
         });
 
+       //修改密码
+        rootview.findViewById(R.id.updatepwd).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), UpdatePwdActivity.class);
+                startActivityForResult(intent ,1000);
+            }
+        });
+
+        //关于app
+        rootview.findViewById(R.id.about).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AboutActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return rootview;
     }
 
@@ -76,6 +96,16 @@ public class MineFragment extends Fragment {
         if (userInfo != null){
             tv_username.setText(userInfo.getUsername());
             tv_nickname.setText(userInfo.getNickname());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 1000){
+            getActivity().finish();
+            Intent intent = new Intent(getActivity(),LoginActivity.class);
+            startActivity(intent);
         }
     }
 }
